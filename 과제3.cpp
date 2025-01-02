@@ -1,12 +1,13 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 template<typename T>
 class SimpleVector{
 private:
-    T* data;    //tÅ¸ÀÔ µ¿Àû¹è¿­ Æ÷ÀÎÅÍ
-    int currentSize;//º¤ÅÍ ¿ä¼Ò °³¼ö ÀúÀå
-    int currentCapacity;//º¤ÅÍ ÃÑ ¿ë·® ÀúÀå
+    T* data;    //tíƒ€ì… ë™ì ë°°ì—´ í¬ì¸í„°
+    int currentSize;//ë²¡í„° ìš”ì†Œ ê°œìˆ˜ ì €ì¥
+    int currentCapacity;//ë²¡í„° ì´ ìš©ëŸ‰ ì €ì¥
 
     void resize(int newcap) {
         if (currentCapacity < newcap) {
@@ -24,18 +25,18 @@ private:
 public:
     SimpleVector() : currentSize(0), currentCapacity(10) {
         data = new T[currentCapacity];
-    }//±âº»»ı¼ºÀÚ´Â Å©±â°¡ 10ÀÎ ¹è¿­À» ¸¸µç´Ù
+    }//ê¸°ë³¸ìƒì„±ìëŠ” í¬ê¸°ê°€ 10ì¸ ë°°ì—´ì„ ë§Œë“ ë‹¤
 
     SimpleVector(int cap) : currentSize(0), currentCapacity(cap) {
         data = new T[currentCapacity];
-    }//¼ıÀÚ¸¦ ÇÏ³ª ¹Ş´Â »ı¼ºÀÚ´Â ÇØ´ç ¼ıÀÚ¿¡ ÇØ´çµÇ´Â Å©±âÀÇ ¹è¿­À» ¸¸µç´Ù
+    }//ìˆ«ìë¥¼ í•˜ë‚˜ ë°›ëŠ” ìƒì„±ìëŠ” í•´ë‹¹ ìˆ«ìì— í•´ë‹¹ë˜ëŠ” í¬ê¸°ì˜ ë°°ì—´ì„ ë§Œë“ ë‹¤
 
 
     SimpleVector(const SimpleVector& other) : currentSize(other.currentSize), currentCapacity(other.currentCapacity) {
         data = new T[other.currentCapacity];
         for (int i = 0; i < currentSize; ++i) {
             data[i] = other.data[i];
-        }//º¹»ç»ı¼ºÀÚ±¸Çö otherÀÎÀÚ¿¡ ±âÁ¸vector¸¦ ¹Ş°í size,capÀüºÎ º¹»ç, ³»ºÎ¿¡¼­ data°¡ °¡¸£Å°´Â ´ë»óÀ» »õ·Î¿îT·Î ¿Å±â¸é¼­ ³»ºÎ¿¡ ÀÖ´Â ¿ø¼Òµéµµ º¹»ç
+        }//ë³µì‚¬ìƒì„±ìêµ¬í˜„ otherì¸ìì— ê¸°ì¡´vectorë¥¼ ë°›ê³  size,capì „ë¶€ ë³µì‚¬, ë‚´ë¶€ì—ì„œ dataê°€ ê°€ë¥´í‚¤ëŠ” ëŒ€ìƒì„ ìƒˆë¡œìš´Të¡œ ì˜®ê¸°ë©´ì„œ ë‚´ë¶€ì— ìˆëŠ” ì›ì†Œë“¤ë„ ë³µì‚¬
     }
     ~SimpleVector() {
         delete[] data;
@@ -47,22 +48,26 @@ public:
         }
             data[currentSize] = val;
             currentSize++;
-            //¹è¿­ÀÇ Å©±â°¡ ²Ë Ã¡´Âµ¥ ¿ø¼Ò°¡ ´õ µé¾î¿Ã°æ¿ì, ±âÁ¸ ¹è¿­º¸´Ù Å©±â¸¦ 5¸¸Å­ ´õ ´Ã¸®°í »õ·Î¿î ¿ø¼Ò±îÁö Ãß°¡µË´Ï´Ù.(±âÁ¸¿¡ ÀÖ´ø °ªµµ À¯ÁöµÇ¾ß ÇÕ´Ï´Ù.)
-        }//ÀÎÀÚ·Î ¹ŞÀº ¿ø¼Ò¸¦ ¸Ç µÚ¿¡ Ãß°¡, ¹İÈ¯°ª ¾øÀ½. 
+            //ë°°ì—´ì˜ í¬ê¸°ê°€ ê½‰ ì°¼ëŠ”ë° ì›ì†Œê°€ ë” ë“¤ì–´ì˜¬ê²½ìš°, ê¸°ì¡´ ë°°ì—´ë³´ë‹¤ í¬ê¸°ë¥¼ 5ë§Œí¼ ë” ëŠ˜ë¦¬ê³  ìƒˆë¡œìš´ ì›ì†Œê¹Œì§€ ì¶”ê°€ë©ë‹ˆë‹¤.(ê¸°ì¡´ì— ìˆë˜ ê°’ë„ ìœ ì§€ë˜ì•¼ í•©ë‹ˆë‹¤.)
+        }//ì¸ìë¡œ ë°›ì€ ì›ì†Œë¥¼ ë§¨ ë’¤ì— ì¶”ê°€, ë°˜í™˜ê°’ ì—†ìŒ. 
 
     void pop_back() {
         if (currentSize > 0) {
             --currentSize;
         }
-    }//º¤ÅÍÀÇ ¸¶Áö¸· ¿ø¼Ò¸¦ Á¦°Å, Á¦°ÅÇÒ¿ø¼Ò°¡ ¾ø´Ù¸é ¾Æ¹« µ¿ÀÛµµ ÇÏÁö ¾ÊÀ½. ÀÎÀÚ¡¤¹İÈ¯°ªÀº ¾øÀ½.
+    }//ë²¡í„°ì˜ ë§ˆì§€ë§‰ ì›ì†Œë¥¼ ì œê±°, ì œê±°í• ì›ì†Œê°€ ì—†ë‹¤ë©´ ì•„ë¬´ ë™ì‘ë„ í•˜ì§€ ì•ŠìŒ. ì¸ìÂ·ë°˜í™˜ê°’ì€ ì—†ìŒ.
 
     int size() const {
         return currentSize;
-    }//ÀÎÀÚ ¾øÀ½. ÇöÀç ¿ø¼ÒÀÇ °³¼ö ¹İÈ¯
+    }//ì¸ì ì—†ìŒ. í˜„ì¬ ì›ì†Œì˜ ê°œìˆ˜ ë°˜í™˜
 
     int capacity() const {
         return currentCapacity;
-    }//ÇöÀç ³»ºÎ ¹è¿­ÀÇ Å©±â ¹İÈ¯
+    }//í˜„ì¬ ë‚´ë¶€ ë°°ì—´ì˜ í¬ê¸° ë°˜í™˜
+
+    void sortData() {
+        sort(data, data + currentSize);
+    }
 
 };
 
@@ -84,22 +89,23 @@ int main() {
     vec.push_back(19);
     vec.push_back(20);
 
-    cout << "¿ø¼Ò°³¼ö size: " << vec.size() << endl; //ÇöÀç ¿ø¼Ò °³¼ö
-    cout << "º¤ÅÍÅ©±â capacity: " << vec.capacity() << endl; //ÇöÀç º¤ÅÍÅ©±â
+    cout << "ì›ì†Œê°œìˆ˜ size: " << vec.size() << endl; //í˜„ì¬ ì›ì†Œ ê°œìˆ˜
+    cout << "ë²¡í„°í¬ê¸° capacity: " << vec.capacity() << endl; //í˜„ì¬ ë²¡í„°í¬ê¸°
 
 
     vec.push_back(33);
-    cout << "ÇÏ³ª ´õ ³Ö°í ¿ø¼Ò°³¼ö size: " << vec.size() << endl; //ÇöÀç ¿ø¼Ò °³¼ö
-    cout << "ÇÏ³ª ´õ ³Ö°í º¤ÅÍÅ©±â capacity: " << vec.capacity() << endl; //ÇöÀç º¤ÅÍÅ©±â
+    cout << "í•˜ë‚˜ ë” ë„£ê³  ì›ì†Œê°œìˆ˜ size: " << vec.size() << endl; //í˜„ì¬ ì›ì†Œ ê°œìˆ˜
+    cout << "í•˜ë‚˜ ë” ë„£ê³  ë²¡í„°í¬ê¸° capacity: " << vec.capacity() << endl; //í˜„ì¬ ë²¡í„°í¬ê¸°
 
     vec.pop_back();
     vec.pop_back();
-    cout << "2°³ »©°í ¿ø¼Ò°³¼ö size: " << vec.size() << endl; //ÇöÀç ¿ø¼Ò °³¼ö
-    cout << "2°³ »©°í º¤ÅÍÅ©±â capacity: " << vec.capacity() << endl; //ÇöÀç º¤ÅÍÅ©±â
+    cout << "2ê°œ ë¹¼ê³  ì›ì†Œê°œìˆ˜ size: " << vec.size() << endl; //í˜„ì¬ ì›ì†Œ ê°œìˆ˜
+    cout << "2ê°œ ë¹¼ê³  ë²¡í„°í¬ê¸° capacity: " << vec.capacity() << endl; //í˜„ì¬ ë²¡í„°í¬ê¸°
 
     vec.push_back(44);
     vec.push_back(55);
     cout << "size  after push_back: " << vec.size() << endl;
+    vec.sortData();
 
     return 0;
 
